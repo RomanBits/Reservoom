@@ -22,7 +22,6 @@ namespace Reservoom.Commands
         {
             CanExecuteChanged?.Invoke(this, new EventArgs());
         }
-
-
+        
     }
 }

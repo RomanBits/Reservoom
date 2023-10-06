@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace Reservoom.Commands
 {
-    internal class MakeReservationCommand : CommandBase
+    public class MakeReservationCommand : CommandBase
     {
         private readonly MakeReservationViewModel _makeReservationViewModel;
         private readonly Hotel _hotel;
@@ -27,7 +27,11 @@ namespace Reservoom.Commands
 
         public override bool CanExecute(object? parameter)
         {
-            return !string.IsNullOrEmpty(_makeReservationViewModel.Username) && base.CanExecute(parameter);
+            return !string.IsNullOrEmpty(_makeReservationViewModel.Username) &&
+                _makeReservationViewModel.FloorNumber > 0 &&
+                _makeReservationViewModel.RoomNumber > 0 &&
+                _makeReservationViewModel.StartDate <= _makeReservationViewModel.EndDate &&
+                base.CanExecute(parameter);
         }
         public override void Execute(object? parameter)
         {
@@ -52,7 +56,11 @@ namespace Reservoom.Commands
         }
         private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(MakeReservationViewModel.Username))
+            if (e.PropertyName == nameof(MakeReservationViewModel.Username) ||
+                e.PropertyName == nameof(MakeReservationViewModel.FloorNumber) ||
+                e.PropertyName == nameof(MakeReservationViewModel.RoomNumber) ||
+                e.PropertyName == nameof(MakeReservationViewModel.StartDate) ||
+                e.PropertyName == nameof(MakeReservationViewModel.EndDate))
             {
                 OnCanExecuteChanged();
             }
