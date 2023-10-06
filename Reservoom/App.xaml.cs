@@ -1,5 +1,6 @@
 ﻿using Reservoom.Exceptions;
 using Reservoom.Models;
+using Reservoom.Services;
 using Reservoom.Stores;
 using Reservoom.ViewModels;
 using System;
@@ -42,12 +43,14 @@ namespace Reservoom
 
         private MakeReservationViewModel CreateMakeReservationViewModel()
         {
-            return new MakeReservationViewModel(_hotel, _navigationStore, CreateReservationViewModel);
+            return new MakeReservationViewModel(_hotel, 
+                new NavigationService(_navigationStore, CreateReservationViewModel));
         }
 
         private ReservationListingViewModel CreateReservationViewModel()
         {
-            return new ReservationListingViewModel(_navigationStore, CreateMakeReservationViewModel);
+            return new ReservationListingViewModel(_hotel,
+                new NavigationService(_navigationStore, CreateMakeReservationViewModel));
         }
     }
 }
